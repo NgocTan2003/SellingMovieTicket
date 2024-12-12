@@ -8,7 +8,11 @@ namespace SellingMovieTickets.Models.Entities
         [Key]
         public int Id { get; set; }
         public string SeatNumber { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } 
+        public bool IsHeld { get; set; } 
+        public DateTime HoldUntil { get; set; } 
+        public string? HeldByUserId { get; set; }
+
 
         public int CinemaShowTimeId { get; set; } 
         public CinemaShowTimeModel CinemaShowTime { get; set; }  

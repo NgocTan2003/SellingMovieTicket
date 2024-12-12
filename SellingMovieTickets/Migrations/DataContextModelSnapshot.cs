@@ -386,9 +386,6 @@ namespace SellingMovieTickets.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -412,11 +409,11 @@ namespace SellingMovieTickets.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CustomerManagements");
                 });
@@ -811,7 +808,6 @@ namespace SellingMovieTickets.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
@@ -826,9 +822,6 @@ namespace SellingMovieTickets.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,3)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1020,7 +1013,16 @@ namespace SellingMovieTickets.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HeldByUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HoldUntil")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHeld")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -1173,7 +1175,9 @@ namespace SellingMovieTickets.Migrations
                 {
                     b.HasOne("SellingMovieTickets.Models.Entities.AppUserModel", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("AppUser");
                 });
